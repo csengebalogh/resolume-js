@@ -2,6 +2,9 @@ import { ResolumeAPI } from "./resolume";
 import { components } from "./schema";
 
 type Composition = components["schemas"]["Composition"];
+type Layer = components["schemas"]["Layer"]
+type Clip = components["schemas"]["Clip"]
+
 
 async function interactWithResolume() {
 
@@ -12,6 +15,8 @@ async function interactWithResolume() {
     const resolume: ResolumeAPI = new ResolumeAPI(hostValue, portValue, pathValue);
 
     let composition: Composition;
+    var layer: Layer;
+
     try {
         composition = await resolume.getComposition();
     } catch (error) {
@@ -30,21 +35,12 @@ async function interactWithResolume() {
 
     await resolume.connectClipByIndex(layerIndex, columnIndex).then(res => console.log(res.status)).catch(e => console.log(e))
 
-    // await resolume.selectClipByIndex(
-    //     layerIndex,
-    //     columnIndex
-    // ).then((response) => {
-    //     console.log(response.status)
-    // })
+    await resolume.getSelectedLayer().then(res => layer = res).catch(err => console.log(err))
 
-    // await resolume.connectSelectedClip()
-    // .then((response) => console.log(response.status))
-    // .catch((error) => {
-    //     console.log(` ${error}`);
-    // })
-
-    
-
+    layer.clips.forEach((clip: Clip) => {
+        if (clip.name.value != '') console.log(clip.name.value);
+        
+    })
 
 }
 

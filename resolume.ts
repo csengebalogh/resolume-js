@@ -51,6 +51,12 @@ export class ResolumeAPI {
         return await fetch(this.url() + `/composition`).then((response) => response.json())
     }
 
+    async getSelectedLayer(): Promise<any> {
+        return await fetch(this.url() + `/composition/layers/selected`)
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    }
+
 
     async putDeck(deck: Deck): Promise<any> {
         return await fetch(
