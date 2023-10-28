@@ -1,10 +1,38 @@
 import { ResolumeAPI } from "./resolume";
 import { components } from "./schema";
 
+type Control = {
+    knobs: []
+
+}
+
 type Composition = components["schemas"]["Composition"];
 type Layer = components["schemas"]["Layer"]
 type Clip = components["schemas"]["Clip"]
+type ParameterCollection = components["schemas"]["ParameterCollection"]
 
+const mapDashboard = (obj:ParameterCollection):Control => {
+    // console.log("DASHBOARD",obj);
+
+    // for (let key in obj) {
+    //     console.log(obj[key]);
+    //     if (obj[key].view.alternative_name != null)
+        
+    // }
+    
+    
+    for (let i=0; i<8; i++) {
+
+        let alt_name:string = obj[`Link ${i}`].view.alternative_name
+        let value = obj[`Link ${i}`].value
+
+        obj[alt_name] = obj[`Link ${i}`]
+        console.log(obj[`Link ${i}`]);
+        
+    }
+
+    return null
+}
 
 async function interactWithResolume() {
 
@@ -15,7 +43,10 @@ async function interactWithResolume() {
     const resolume: ResolumeAPI = new ResolumeAPI(hostValue, portValue, pathValue);
 
     let composition: Composition;
-    var layer: Layer;
+    var selectedLayer: Layer;
+    var selectedClip: Clip;
+    var layerDashboard: Control;
+    var clipDashboard: Control;
 
     try {
         composition = await resolume.getComposition();
@@ -30,18 +61,21 @@ async function interactWithResolume() {
         console.log(`Couldn't add column: ${error}`);
     });
 
-    const layerIndex = 2;
-    const columnIndex = 1;
-
-    await resolume.connectClipByIndex(layerIndex, columnIndex).then(res => console.log(res.status)).catch(e => console.log(e))
-
-    await resolume.getSelectedLayer().then(res => layer = res).catch(err => console.log(err))
-
-    layer.clips.forEach((clip: Clip) => {
-        if (clip.name.value != '') console.log(clip.name.value);
-        
-    })
-
+    await resolume.getSelectedLayer()
+        .then(res => {
+            selectedLayer = res
+            layerDashboard = mapDashboard(selectedLayer.dashboard)
+        })
+        .catch(err => console.log(err))
+    await resolume.getSelectedClip()
+        .then(res => {
+            selectedClip = res
+            clipDashboard = mapDashboard(selectedClip.dashboard)
+        })
+        .catch(err => console.log(err))   
+    
+    
+    
 }
 
 interactWithResolume().then(() => {

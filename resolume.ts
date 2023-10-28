@@ -51,9 +51,15 @@ export class ResolumeAPI {
         return await fetch(this.url() + `/composition`).then((response) => response.json())
     }
 
-    async getSelectedLayer(): Promise<any> {
+    async getSelectedLayer(): Promise<Layer> {
         return await fetch(this.url() + `/composition/layers/selected`)
-        .then(res => res.json())
+        .then((res) => res.json())
+        .catch(err => console.log(err))
+    }
+
+    async getSelectedClip(): Promise<Clip> {
+        return await fetch(this.url() + `/composition/clips/selected`)
+        .then((res) => res.json())
         .catch(err => console.log(err))
     }
 
@@ -101,11 +107,11 @@ export class ResolumeAPI {
         .catch((e) => console.log(e))
     }
 
-    async selectClipByIndex(layerIndex: number, clipIndex: number): Promise<any> {
+    async selectClipByIndex(layerIndex: number, clipIndex: number): Promise<Clip> {
         return await fetch(
             this.url() + `/composition/layers/${layerIndex}/clips/${clipIndex}/select`,
             {method: 'POST'}
-        ).then((response) => response)
+        ).then((response) => response.json())
         .catch((e) => console.log(e))
 
     }
