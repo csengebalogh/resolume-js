@@ -1,5 +1,5 @@
-import {ResolumeAPI} from "./resolume";
-import {components} from "./schema";
+import { ResolumeAPI } from "./resolume";
+import { components } from "./schema";
 
 type Composition = components["schemas"]["Composition"];
 
@@ -24,6 +24,27 @@ async function interactWithResolume() {
     await resolume.addColumn().catch((error) => {
         console.log(`Couldn't add column: ${error}`);
     });
+
+    const layerIndex = 2;
+    const columnIndex = 1;
+
+    await resolume.connectClipByIndex(layerIndex, columnIndex).then(res => console.log(res.status)).catch(e => console.log(e))
+
+    // await resolume.selectClipByIndex(
+    //     layerIndex,
+    //     columnIndex
+    // ).then((response) => {
+    //     console.log(response.status)
+    // })
+
+    // await resolume.connectSelectedClip()
+    // .then((response) => console.log(response.status))
+    // .catch((error) => {
+    //     console.log(` ${error}`);
+    // })
+
+    
+
 
 }
 

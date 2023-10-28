@@ -87,13 +87,32 @@ export class ResolumeAPI {
         ).then((response) => response)
     }
 
-    async getClipByIndex(layerIndex: number, clipIndex: number): Promise<Clip> {
-        console.log("Trying URL:", this.url() + `/composition/layers/${layerIndex}/clips/${clipIndex}`);
+    async connectClipByIndex(layerIndex: number, clipIndex: number): Promise<any> {
         return await fetch(
-            this.url() + `/composition/layers/${layerIndex}/clips/${clipIndex}`,
-            {method: 'GET'}
-        ).then((response) => response.json())
+            this.url() + `/composition/layers/${layerIndex}/clips/${clipIndex}/connect`,
+            {method: 'POST'}
+        ).then((response) => response)
+        .catch((e) => console.log(e))
     }
+
+    async selectClipByIndex(layerIndex: number, clipIndex: number): Promise<any> {
+        return await fetch(
+            this.url() + `/composition/layers/${layerIndex}/clips/${clipIndex}/select`,
+            {method: 'POST'}
+        ).then((response) => response)
+        .catch((e) => console.log(e))
+
+    }
+
+    //////////////////////////////////////////////////////
+    async connectSelectedClip(): Promise<any> {
+        return await fetch(
+            this.url() + `/composition/clips/selected/connect`,
+            {method: 'POST'}
+        ).then((response) => response)
+        .catch((e) => console.log(e))
+    }
+    //////////////////////////////////////////////////////
 
     async replaceClip(layerIndex: number, clipIndex: number, clip: Clip): Promise<any> {
         return await fetch(
