@@ -18,11 +18,10 @@
   "author": "Allen Ellis",
   "license": "ISC",
   "dependencies": {
-    "openapi-typescript": "^6.1.0",
-    "typescript": "^5.0.4"
+    "openapi-typescript": "^6.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.4.5"
   }
 }

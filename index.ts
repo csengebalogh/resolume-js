@@ -10,26 +10,15 @@ type Composition = components["schemas"]["Composition"];
 type Layer = components["schemas"]["Layer"]
 type Clip = components["schemas"]["Clip"]
 type ParameterCollection = components["schemas"]["ParameterCollection"]
+type ParamBoolean = components["schemas"]["BooleanParameter"];
+
+function test (e: any) {
+    console.log("Works!!!", e.target.value);
+}
+
 
 const mapDashboard = (obj:ParameterCollection):Control => {
-    // console.log("DASHBOARD",obj);
 
-    // for (let key in obj) {
-    //     console.log(obj[key]);
-    //     if (obj[key].view.alternative_name != null)
-        
-    // }
-    
-    
-    for (let i=0; i<8; i++) {
-
-        let alt_name:string = obj[`Link ${i}`].view.alternative_name
-        let value = obj[`Link ${i}`].value
-
-        obj[alt_name] = obj[`Link ${i}`]
-        console.log(obj[`Link ${i}`]);
-        
-    }
 
     return null
 }
@@ -38,7 +27,7 @@ async function interactWithResolume() {
 
     const hostValue = "127.0.0.1";
     const portValue = 8080;
-    const pathValue = "/path/to/local/files";
+    const pathValue = "";
 
     const resolume: ResolumeAPI = new ResolumeAPI(hostValue, portValue, pathValue);
 
@@ -49,12 +38,16 @@ async function interactWithResolume() {
     var clipDashboard: Control;
 
     try {
-        composition = await resolume.getComposition();
+        composition = await resolume.getComp();
+
     } catch (error) {
         console.log("Error connecting to Resolume:", error);
         return;
     }
-    console.log("Composition is", composition);
+    console.log("Composition is bypassed: ", composition.bypassed.value);
+
+    // Update the whole comp  
+    await resolume.updateComp(composition).catch((err) => console.log(err))
 
     // Add a column
     await resolume.addColumn().catch((error) => {
@@ -67,6 +60,7 @@ async function interactWithResolume() {
             layerDashboard = mapDashboard(selectedLayer.dashboard)
         })
         .catch(err => console.log(err))
+
     await resolume.getSelectedClip()
         .then(res => {
             selectedClip = res

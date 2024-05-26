@@ -16,6 +16,7 @@ type ColorParameter = components["schemas"]["ColorParameter"];
 type ChoiceParameter = components["schemas"]["ChoiceParameter"];
 type ParameterCollection = components["schemas"]["ParameterCollection"];
 type TextParameter = components["schemas"]["TextParameter"];
+type ParamBoolean = components["schemas"]["BooleanParameter"];
 
 
 export class ResolumeAPI {
@@ -47,7 +48,7 @@ export class ResolumeAPI {
         return await fetch(this.url() + `/product`).then((response) => response.json())
     }
 
-    async getComposition(): Promise<Composition> {
+    async getComp(): Promise<Composition> {
         return await fetch(this.url() + `/composition`).then((response) => response.json())
     }
 
@@ -62,6 +63,15 @@ export class ResolumeAPI {
         .then((res) => res.json())
         .catch(err => console.log(err))
     }
+
+    async updateComp(state: Composition): Promise<any> {
+        return await fetch(
+            this.url() + `/composition`,
+            {method: 'PUT', body: JSON.stringify(state)}
+        ).then((res) => res)
+    }
+
+
 
 
     async putDeck(deck: Deck): Promise<any> {
